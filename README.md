@@ -215,8 +215,9 @@ sanitizer or undefined-behavior finding.
   root-smoke-validated, recalibrated, and preflight-validated**
 - Bounded findings, degradations, media/PipeWire/network sessions, and recovery
   journal with explicit dropped-record accounting: **implemented, sanitizer-
-  tested, installed, root-smoke-validated, recalibrated, and preflight-
-  validated**
+  tested, installed, root-smoke-validated, recalibrated, preflight-validated,
+  noisy normal-use attended-validated, and short-unattended-validated with zero
+  dropped evidence**
 - Persistence and authentication/session monitoring: **planned**
 - Privilege separation and optional daemon operation: **future hardening**
 
