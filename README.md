@@ -69,6 +69,9 @@ that distinction explainable.
 - **Kernel assurance** — tracks kernel release, taint, module-signature
   enforcement, lockdown mode, loaded-module fingerprints, and BPF program
   lifecycle.
+- **Persistence integrity** — fingerprints systemd, cron/at, desktop autostart,
+  legacy init, and login-startup entries, including systemd enablement symlinks,
+  with explicit added, changed, removed, and unavailable states.
 - **Preflight readiness checks** — verifies privileges, protected files,
   baseline compatibility, helper safety, kernel alignment, and live BPF access
   before an unattended run.
@@ -190,7 +193,7 @@ on a Dell Latitude 5400. Testing has included:
 - monotonic runtime, deadline-overrun accounting, maximum scan latency, and
   collector/policy timing in schema-versioned reports.
 
-The automated suite currently contains 12 optimized test suites, matching
+The automated suite currently contains 13 optimized test suites, matching
 AddressSanitizer and UndefinedBehaviorSanitizer builds, deterministic golden
 human reports, a separately tested JSON schema, and reproducible mutation
 fuzzing for exposed network, kernel/helper-output, and process-argument parsers.
@@ -202,12 +205,16 @@ sanitizer or undefined-behavior finding.
 - Standard release layout: **implemented and install-verified** — Nightwatch can be installed once
   and calibrated, checked, and monitored from any directory without a
   developer-specific source path
-- Final release calibration and preflight: **complete** — the protected
+- Pre-persistence release-path calibration and preflight: **complete** — the protected
   version-5 baseline matches the installed release binary and current kernel;
   all 11 readiness checks pass with no warning or failure
 - Installed report-path smoke test: **complete** — 13 snapshots, no failed
   scan, overrun, degradation, integrity change, or dropped evidence; protected
   text and schema-3 JSON evidence finalized under `/var/log/nightwatch`
+- Publication-safe packaging rehearsal: **implemented and clean-room tested** —
+  deterministic allow-list archive, SHA-256 sidecar, empty trust template,
+  privacy scan, all 12 then-packaged tests, and staged system-layout installation
+  pass
 - Foreground monitoring and reports: **complete and validated**
 - Calibration, media attribution, and recovery journals: **complete and
   validated**
@@ -227,7 +234,11 @@ sanitizer or undefined-behavior finding.
   tested, installed, root-smoke-validated, recalibrated, preflight-validated,
   noisy normal-use attended-validated, and short-unattended-validated with zero
   dropped evidence**
-- Persistence and authentication/session monitoring: **planned**
+- Persistence monitoring: **baseline-format-6 foundation implemented,
+  sanitizer-tested, installed, calibrated with 951 records, all-pass
+  preflight-validated, and 65-second root-smoke-validated with zero persistence
+  findings or degradation**
+- Authentication/session monitoring: **planned as the next 3C slice**
 - Privilege separation and optional daemon operation: **future hardening**
 
 ## Limitations
@@ -252,7 +263,8 @@ visibility rather than presenting uncertainty as a clean result.
 
 Near-term work includes:
 
-- persistence checks for systemd units, scheduled tasks, and startup entries;
+- expanded persistence policy and target validation for the implemented
+  systemd, scheduled-task, autostart, init, and login-startup inventory;
 - authentication and session evidence for unauthorized-use detection;
 - independent BPF attachment-site inventory;
 - broader coverage-guided parser fuzzing and additional resource ceilings;
@@ -270,6 +282,7 @@ Near-term work includes:
 - `modinfo` and `bpftool`
 - SHA-256 file fingerprints
 - Human-readable text and JSON schema-versioned evidence
+- MIT licensed
 
 ## Release command flow
 
@@ -298,6 +311,13 @@ The following will be available in this repository for the judges:
 - safe synthetic test fixtures;
 - sample human and JSON reports;
 - hackathon demonstration instructions.
+
+Release archives are assembled from an explicit source allow-list. Real host
+baselines, reviewed fingerprints, reports, binaries, local shortcuts, and
+conversation state are excluded; the packaged reviewed database is an empty
+template that grants no trust by default.
+
+Nightwatch is available under the [MIT License](LICENSE).
 
 **Full repository content coming soon.**
 
