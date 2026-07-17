@@ -190,7 +190,7 @@ on a Dell Latitude 5400. Testing has included:
 - monotonic runtime, deadline-overrun accounting, maximum scan latency, and
   collector/policy timing in schema-versioned reports.
 
-The automated suite currently contains ten optimized test suites, matching
+The automated suite currently contains 11 optimized test suites, matching
 AddressSanitizer and UndefinedBehaviorSanitizer builds, deterministic golden
 human reports, a separately tested JSON schema, and reproducible mutation
 fuzzing for exposed network, kernel/helper-output, and process-argument parsers.
@@ -206,11 +206,17 @@ sanitizer or undefined-behavior finding.
 - Kernel, module, and BPF monitoring: **complete and validated**
 - Reviewed executable and script fingerprints: **complete and validated**
 - Typed assurance and outcome-driven reporting: **implemented and validated**
-- Versioned JSON assurance reports: **schema 2 implemented and
-  attended-validated; schema 1 overnight-validated**
+- Versioned JSON assurance reports: **schema 3 implemented and root-smoke-
+  validated; schemas 1 and 2 attended/overnight-validated**
 - Unified bounded helper execution for `modinfo`, `bpftool`, and privilege-
-  dropped `pw-cli`: **implemented, sanitizer-tested, installed, calibrated,
-  and preflight-validated**
+  dropped `pw-cli`: **implemented, sanitizer-tested, installed, preflight-
+  validated, and normal-use attended-validated**
+- Session-anchored one-second sampling cadence: **implemented, fully tested,
+  root-smoke-validated, recalibrated, and preflight-validated**
+- Bounded findings, degradations, media/PipeWire/network sessions, and recovery
+  journal with explicit dropped-record accounting: **implemented, sanitizer-
+  tested, installed, root-smoke-validated, recalibrated, and preflight-
+  validated**
 - Persistence and authentication/session monitoring: **planned**
 - Privilege separation and optional daemon operation: **future hardening**
 
