@@ -190,7 +190,7 @@ on a Dell Latitude 5400. Testing has included:
 - monotonic runtime, deadline-overrun accounting, maximum scan latency, and
   collector/policy timing in schema-versioned reports.
 
-The automated suite currently contains 11 optimized test suites, matching
+The automated suite currently contains 12 optimized test suites, matching
 AddressSanitizer and UndefinedBehaviorSanitizer builds, deterministic golden
 human reports, a separately tested JSON schema, and reproducible mutation
 fuzzing for exposed network, kernel/helper-output, and process-argument parsers.
@@ -199,6 +199,15 @@ sanitizer or undefined-behavior finding.
 
 ## Current project status
 
+- Standard release layout: **implemented and install-verified** — Nightwatch can be installed once
+  and calibrated, checked, and monitored from any directory without a
+  developer-specific source path
+- Final release calibration and preflight: **complete** — the protected
+  version-5 baseline matches the installed release binary and current kernel;
+  all 11 readiness checks pass with no warning or failure
+- Installed report-path smoke test: **complete** — 13 snapshots, no failed
+  scan, overrun, degradation, integrity change, or dropped evidence; protected
+  text and schema-3 JSON evidence finalized under `/var/log/nightwatch`
 - Foreground monitoring and reports: **complete and validated**
 - Calibration, media attribution, and recovery journals: **complete and
   validated**
@@ -261,6 +270,21 @@ Near-term work includes:
 - `modinfo` and `bpftool`
 - SHA-256 file fingerprints
 - Human-readable text and JSON schema-versioned evidence
+
+## Release command flow
+
+After building and installing, the normal host workflow is independent of the
+source checkout:
+
+```bash
+sudo /usr/local/sbin/nightwatch calibrate
+sudo /usr/local/sbin/nightwatch preflight
+sudo /usr/local/sbin/nightwatch monitor
+```
+
+Protected configuration, state, and reports live under `/etc/nightwatch`,
+`/var/lib/nightwatch`, and `/var/log/nightwatch` respectively. Explicit CLI
+path overrides remain available for tests and advanced deployments.
 
 ## Source and documentation
 
