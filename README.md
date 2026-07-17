@@ -2,6 +2,7 @@
 <a href="https://github.com/effjy/nightwatch/"><img src="titles/nightwatch-title.svg" height="52" alt="Nightwatch"></a>
 </div>
 <br>
+
 > A passive, baseline-driven Linux security monitor that detects suspicious
 > system activity and produces clear, evidence-backed overnight reports.
 
