@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="549" height="96" viewBox="0 0 549 96" role="img" aria-label="Nightwatch">
+  <title>Nightwatch</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00FFCC"/>
+      <stop offset="55%" stop-color="#1FB6FF"/>
+      <stop offset="100%" stop-color="#8A2BE2"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g fill="url(#g)" filter="url(#glow)">
+    <path d="M56 0 L56 720 L167 720 L695 92 L695 720 L776 720 L776 0 L665 0 L137 628 L137 0 L56 0 Z" transform="translate(36.00,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M66 0 L66 720 L148 720 L148 0 L66 0 Z" transform="translate(86.46,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M176 0 Q143 0 115 16 Q88 32 72 59 Q56 87 56 120 L56 600 Q56 633 72 660 Q88 688 115 704 Q143 720 176 720 L656 720 Q689 720 716 704 Q744 688 760 660 Q776 633 776 600 L776 571 L695 571 L695 600 Q695 616 683 627 Q672 639 656 639 L176 639 Q160 639 148 627 Q137 616 137 600 L137 120 Q137 104 148 92 Q160 81 176 81 L656 81 Q672 81 683 92 Q695 104 695 120 L695 298 L517 298 L517 380 L776 380 L776 120 Q776 87 760 59 Q744 32 716 16 Q689 0 656 0 L176 0 Z" transform="translate(105.38,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M57 0 L57 720 L138 720 L138 401 L713 401 L713 720 L795 720 L795 0 L713 0 L713 319 L138 319 L138 0 L57 0 Z" transform="translate(155.74,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M340 0 L340 0 L340 639 L20 639 L20 720 L740 720 L740 639 L421 639 L421 0 L340 0 Z" transform="translate(207.18,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M297 0 L297 0 L35 720 L121 720 L332 142 L542 720 L640 720 L851 142 L1060 720 L1148 720 L886 0 L815 0 L591 615 L367 0 L297 0 Z" transform="translate(253.91,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M58 0 L58 600 Q58 633 74 660 Q90 688 117 704 Q145 720 178 720 L658 720 Q691 720 718 704 Q746 688 762 660 Q778 633 778 600 L778 0 L697 0 L697 263 L139 263 L139 0 L58 0 L58 0 M139 344 L697 344 L697 600 Q697 616 685 627 Q674 639 658 639 L178 639 Q162 639 150 627 Q139 616 139 600 L139 344 L139 344 Z" transform="translate(322.09,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M340 0 L340 0 L340 639 L20 639 L20 720 L740 720 L740 639 L421 639 L421 0 L340 0 Z" transform="translate(372.75,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M176 0 Q143 0 115 16 Q88 32 72 59 Q56 87 56 120 L56 600 Q56 633 72 660 Q88 688 115 704 Q143 720 176 720 L774 720 L774 639 L176 639 Q160 639 148 627 Q137 616 137 600 L137 120 Q137 104 148 92 Q160 81 176 81 L774 81 L774 0 L176 0 Z" transform="translate(419.49,70.0) scale(0.05104,-0.05104)"/>
+    <path d="M57 0 L57 720 L138 720 L138 401 L713 401 L713 720 L795 720 L795 0 L713 0 L713 319 L138 319 L138 0 L57 0 Z" transform="translate(469.44,70.0) scale(0.05104,-0.05104)"/>
+  </g>
+</svg>
