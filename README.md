@@ -187,10 +187,15 @@ on a Dell Latitude 5400. Testing has included:
 - transient and persistent network behavior;
 - kernel module and BPF lifecycle changes;
 - report recovery and cadence regression tests.
+- monotonic runtime, deadline-overrun accounting, maximum scan latency, and
+  collector/policy timing in schema-versioned reports.
 
-The automated suite currently contains nine optimized test suites, matching
+The automated suite currently contains ten optimized test suites, matching
 AddressSanitizer and UndefinedBehaviorSanitizer builds, deterministic golden
-human reports, and a separately tested JSON schema.
+human reports, a separately tested JSON schema, and reproducible mutation
+fuzzing for exposed network, kernel/helper-output, and process-argument parsers.
+The first campaign completed 200,000 distinct malformed cases without a
+sanitizer or undefined-behavior finding.
 
 ## Current project status
 
@@ -201,7 +206,11 @@ human reports, and a separately tested JSON schema.
 - Kernel, module, and BPF monitoring: **complete and validated**
 - Reviewed executable and script fingerprints: **complete and validated**
 - Typed assurance and outcome-driven reporting: **implemented and validated**
-- Versioned JSON assurance reports: **implemented and validated**
+- Versioned JSON assurance reports: **schema 2 implemented and
+  attended-validated; schema 1 overnight-validated**
+- Unified bounded helper execution for `modinfo`, `bpftool`, and privilege-
+  dropped `pw-cli`: **implemented, sanitizer-tested, installed, calibrated,
+  and preflight-validated**
 - Persistence and authentication/session monitoring: **planned**
 - Privilege separation and optional daemon operation: **future hardening**
 
@@ -230,7 +239,7 @@ Near-term work includes:
 - persistence checks for systemd units, scheduled tasks, and startup entries;
 - authentication and session evidence for unauthorized-use detection;
 - independent BPF attachment-site inventory;
-- parser fuzzing and additional resource ceilings;
+- broader coverage-guided parser fuzzing and additional resource ceilings;
 - session-to-session comparison;
 - authenticated baselines and tamper-evident reports;
 - a smaller privileged collection boundary;
