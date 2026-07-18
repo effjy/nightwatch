@@ -6,6 +6,37 @@
 > A passive, baseline-driven Linux security monitor that detects suspicious
 > system activity and produces clear, evidence-backed overnight reports.
 
+## Built with OpenAI Codex
+
+> **Codex helped me grow Nightwatch from a personal idea—“watch my computer
+> while I sleep and explain the night to me in the morning”—into a complete,
+> tested, and release-ready security project.**
+
+I originated Nightwatch's purpose, requirements, security philosophy, and
+host-specific workflow. I also made the product decisions and performed the
+real-world work: repeated calibration, attended testing, overnight validation,
+report review, and confirmation of which observed activity was intentional.
+
+Codex worked alongside me as an AI engineering collaborator. It helped turn my
+ideas and test results into concrete milestones; implement and review the C++17
+code; diagnose bugs found in real reports; develop regression, sanitizer, fuzz,
+and schema tests; and shape the assurance model that distinguishes verified
+checks, detected findings, and unavailable evidence. Codex also helped create
+the threat model, design and operational documentation, privacy audit,
+deterministic release package, and judge-facing presentation material.
+
+The project grew through a continuous human-and-Codex feedback loop:
+
+```text
+idea → implementation → calibration → real watch → evidence review → improvement
+```
+
+Codex did more than help write code: it helped me challenge assumptions, learn
+from the machine's actual behavior, and develop a small draft into a careful,
+explainable Linux host-security system. I remained the project owner and final
+decision-maker throughout, while Codex accelerated the engineering and helped
+make the original idea substantially stronger.
+
 ## Release status
 
 Nightwatch `0.1.0` is feature-frozen and release-package validated for its
