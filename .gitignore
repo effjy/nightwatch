@@ -1,0 +1,26 @@
+# Host-specific security evidence and policy. Never publish these.
+/config/
+/reports/
+/reviewed-executables.db
+
+# Local convenience commands and conversation state.
+/calib
+/pre
+/run
+/resume
+/SAVEPOINT.md
+
+# Compiled and generated artifacts.
+/nightwatch
+/src/*.o
+/tests/*_test
+/build/
+/dist/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+
+# The reproducible documentation source is retained; PDFs are local outputs.
+/Nightwatch.pdf
