@@ -6,16 +6,19 @@
 > A passive, baseline-driven Linux security monitor that detects suspicious
 > system activity and produces clear, evidence-backed overnight reports.
 
-## Repository preview
+## Release status
 
-Nightwatch is being prepared for its hackathon presentation. The complete
-source code, build instructions, test suite, sample reports, and demonstration
-materials will be published here soon.
-
-The current version is actively running on and being validated against a Dell
-Latitude 5400 Linux workstation. This repository is private while final
-long-duration testing, documentation review, and presentation preparation are
-completed.
+Nightwatch `0.1.0` is feature-frozen and release-package validated for its
+hackathon release. The repository
+contains the complete C++17 source, build system, automated tests, threat model,
+design notes, release checklist, and demonstration guide. The frozen candidate
+passed 14 optimized and 14 AddressSanitizer/UndefinedBehaviorSanitizer suites,
+an all-pass 16-check host preflight, short attended validation, and a final
+4.6-hour unattended watch with 16,593 completed snapshots and no skipped scan,
+high-severity finding, integrity change, media capture, persistence change, or
+dropped evidence. Its deterministic allow-list archive also passed an exact
+privacy scan, clean-room optimized and sanitizer suites, and staged installation
+inspection.
 
 ## What is Nightwatch?
 
@@ -36,6 +39,147 @@ outcome-driven report that answers three practical questions:
 Nightwatch is deliberately passive. It observes and explains; it does not kill
 processes, block devices, modify the firewall, load kernel modules, or make
 automatic trust decisions on the owner's behalf.
+
+## Install and run Nightwatch
+
+### Requirements
+
+Nightwatch targets a systemd-based Linux host and currently has its strongest
+validation on Ubuntu. Building requires:
+
+- a C++17 compiler (`g++`);
+- GNU Make;
+- standard Linux development headers and tools.
+
+Runtime collection uses these system tools:
+
+- `modinfo` from `kmod` for kernel-module metadata;
+- `bpftool` for BPF inventory;
+- `pw-cli` from PipeWire for best-effort media-client attribution;
+- `journalctl` and `loginctl` from systemd for authentication/session evidence.
+
+On Ubuntu or Debian, install the prerequisites with:
+
+```bash
+sudo apt update
+sudo apt install build-essential bpftool kmod pipewire-bin
+```
+
+`journalctl` and `loginctl` are normally already supplied by the running
+systemd installation. `jq` is optional but convenient for inspecting JSON:
+
+```bash
+sudo apt install jq
+```
+
+Package names differ on other distributions. Confirm that the five runtime
+commands above are available before relying on an unattended watch.
+
+### Download, compile, and test
+
+```bash
+git clone https://github.com/effjy/nightwatch.git
+cd nightwatch
+make
+make test
+```
+
+`make test` builds Nightwatch and runs all 14 optimized unit, regression,
+golden-report, schema, parser, and policy suites. The optional sanitizer pass is:
+
+```bash
+make sanitize
+```
+
+### Install
+
+Install the binary and create the protected system directories:
+
+```bash
+sudo make install
+```
+
+This installs:
+
+```text
+/usr/local/sbin/nightwatch
+/etc/nightwatch/                 root-owned configuration
+/var/lib/nightwatch/             protected baseline state
+/var/log/nightwatch/             protected reports and recovery evidence
+```
+
+On a **brand-new Nightwatch installation only**, install the empty reviewed-
+fingerprint database:
+
+```bash
+sudo make install-reviewed
+```
+
+Do not run `install-reviewed` during an upgrade: it intentionally copies the
+public empty template and would replace a locally curated reviewed database.
+Ordinary `sudo make install` updates only the program and preserves that policy.
+
+### Calibrate the host
+
+Inspect the machine first, then create its protected baseline:
+
+```bash
+sudo /usr/local/sbin/nightwatch calibrate
+```
+
+The default ceremony records 120 seconds of ordinary idle behavior. Nightwatch
+then prompts for a 30-second media phase; intentionally exercise the microphone
+and webcam behavior that should be recognized later. Calibration records what
+is present—it does not prove that the machine is clean. Investigate unexpected
+processes, listeners, modules, BPF programs, or persistence entries before
+accepting them as expected state.
+
+Calibration must be repeated after installing a different Nightwatch binary,
+changing kernels, or intentionally changing monitored baseline state.
+
+### Run preflight
+
+Before every unattended watch, verify that the installed binary, baseline,
+kernel, protected files, helper tools, journal access, login-session access,
+report directory, and BPF visibility are ready:
+
+```bash
+sudo /usr/local/sbin/nightwatch preflight
+```
+
+Proceed only when the command ends with `READY for an unattended watch` and no
+warning or failure remains unexplained.
+
+### Monitor
+
+```bash
+sudo /usr/local/sbin/nightwatch monitor
+```
+
+Leave Nightwatch in the foreground while the computer is unattended. Press
+Ctrl-C when the watch is finished. Nightwatch finalizes and prints paths for a
+human-readable report and schema-versioned JSON report under
+`/var/log/nightwatch`.
+
+The default interval is one second. It can be stated explicitly with:
+
+```bash
+sudo /usr/local/sbin/nightwatch monitor --interval 1
+```
+
+### Read the reports
+
+Reports are root-owned and mode `0600` because they can contain usernames,
+command lines, local paths, socket addresses, and other sensitive host context:
+
+```bash
+sudo less /var/log/nightwatch/nightwatch-YYYYMMDD-HHMMSS.txt
+sudo jq . /var/log/nightwatch/nightwatch-YYYYMMDD-HHMMSS.json
+```
+
+Read the assurance summary first: overall conclusion, domain states, what went
+well, prioritized findings, and monitoring degradations. Raw evidence remains
+below it for verification. Do not publish an unreviewed real-host report.
 
 ## Why we built it
 
@@ -72,9 +216,13 @@ that distinction explainable.
 - **Persistence integrity** — fingerprints systemd, cron/at, desktop autostart,
   legacy init, and login-startup entries, including systemd enablement symlinks,
   with explicit added, changed, removed, and unavailable states.
+- **Authentication and session evidence** — uses bounded incremental journal
+  evidence and sampled systemd-logind state for login/session lifecycle, failed
+  authentication, and reliable lock/unlock transitions, with explicit unknown
+  or degraded status when evidence cannot be read.
 - **Preflight readiness checks** — verifies privileges, protected files,
-  baseline compatibility, helper safety, kernel alignment, and live BPF access
-  before an unattended run.
+  baseline compatibility, helper safety, kernel alignment, journal and session
+  access, and live BPF access before an unattended run.
 - **Outcome-driven reporting** — separates probable normal activity, items that
   need review, high-concern findings, and visibility degradations.
 - **Correlated maintenance activity** — conservatively groups verified Ubuntu
@@ -167,7 +315,7 @@ baseline. The owner remains in control of every trust decision.
 
 Nightwatch is written in C++17 and builds with GNU Make without third-party C++
 libraries. It collects local evidence primarily from Linux `/proc` and sysfs,
-with bounded use of `pw-cli`, `modinfo`, and `bpftool`.
+with bounded use of `pw-cli`, `modinfo`, `bpftool`, `journalctl`, and `loginctl`.
 
 Protected inputs and evidence use strict ownership and permission checks,
 bounded file sizes, no-symlink file opening, exclusive report creation, helper
@@ -189,11 +337,12 @@ on a Dell Latitude 5400. Testing has included:
 - interpreter-script integrity changes;
 - transient and persistent network behavior;
 - kernel module and BPF lifecycle changes;
-- report recovery and cadence regression tests.
+- persistence and authentication/session evidence;
+- report recovery and cadence regression tests;
 - monotonic runtime, deadline-overrun accounting, maximum scan latency, and
   collector/policy timing in schema-versioned reports.
 
-The automated suite currently contains 13 optimized test suites, matching
+The automated suite currently contains 14 optimized test suites, matching
 AddressSanitizer and UndefinedBehaviorSanitizer builds, deterministic golden
 human reports, a separately tested JSON schema, and reproducible mutation
 fuzzing for exposed network, kernel/helper-output, and process-argument parsers.
@@ -202,44 +351,19 @@ sanitizer or undefined-behavior finding.
 
 ## Current project status
 
-- Standard release layout: **implemented and install-verified** — Nightwatch can be installed once
-  and calibrated, checked, and monitored from any directory without a
-  developer-specific source path
-- Pre-persistence release-path calibration and preflight: **complete** — the protected
-  version-5 baseline matches the installed release binary and current kernel;
-  all 11 readiness checks pass with no warning or failure
-- Installed report-path smoke test: **complete** — 13 snapshots, no failed
-  scan, overrun, degradation, integrity change, or dropped evidence; protected
-  text and schema-3 JSON evidence finalized under `/var/log/nightwatch`
-- Publication-safe packaging rehearsal: **implemented and clean-room tested** —
-  deterministic allow-list archive, SHA-256 sidecar, empty trust template,
-  privacy scan, all 12 then-packaged tests, and staged system-layout installation
-  pass
-- Foreground monitoring and reports: **complete and validated**
-- Calibration, media attribution, and recovery journals: **complete and
-  validated**
-- Network monitoring: **complete and validated**
-- Kernel, module, and BPF monitoring: **complete and validated**
-- Reviewed executable and script fingerprints: **complete and validated**
-- Typed assurance and outcome-driven reporting: **implemented and validated**
-- Versioned JSON assurance reports: **schema 3 implemented and root-smoke-
-  validated; schemas 1 and 2 attended/overnight-validated**
-- Unified bounded helper execution for `modinfo`, `bpftool`, and privilege-
-  dropped `pw-cli`: **implemented, sanitizer-tested, installed, preflight-
-  validated, and normal-use attended-validated**
-- Session-anchored one-second sampling cadence: **implemented, fully tested,
-  root-smoke-validated, recalibrated, and preflight-validated**
-- Bounded findings, degradations, media/PipeWire/network sessions, and recovery
-  journal with explicit dropped-record accounting: **implemented, sanitizer-
-  tested, installed, root-smoke-validated, recalibrated, preflight-validated,
-  noisy normal-use attended-validated, and short-unattended-validated with zero
-  dropped evidence**
-- Persistence monitoring: **baseline-format-6 foundation implemented,
-  sanitizer-tested, installed, calibrated with 951 records, all-pass
-  preflight-validated, and 65-second root-smoke-validated with zero persistence
-  findings or degradation**
-- Authentication/session monitoring: **planned as the next 3C slice**
-- Privilege separation and optional daemon operation: **future hardening**
+The hackathon detection scope is implemented and feature-frozen. Foreground
+monitoring, host calibration, exact reviewed fingerprints, media attribution,
+network behavior, kernel/module/BPF integrity, persistence, authentication and
+login sessions, typed assurance, schema-4 JSON, recovery evidence, retention
+budgets, and the 16-check preflight are implemented and tested.
+
+The final 4.6-hour unattended candidate validation completed 16,593 snapshots
+with no skipped scan, high-priority finding, integrity change, media capture,
+persistence change, malformed/truncated authentication evidence, or dropped
+record. Four low-priority socket patterns were attributed to expected browser,
+DNS, model-service, and package-refresh activity. One short-lived, subsequently
+verified maintenance command conservatively produced a noncritical visibility
+degradation, demonstrating that unavailable evidence is not mislabeled clean.
 
 ## Limitations
 
@@ -263,9 +387,7 @@ visibility rather than presenting uncertainty as a clean result.
 
 Near-term work includes:
 
-- expanded persistence policy and target validation for the implemented
-  systemd, scheduled-task, autostart, init, and login-startup inventory;
-- authentication and session evidence for unauthorized-use detection;
+- hackathon screenshots, demonstration recording, and publication checks;
 - independent BPF attachment-site inventory;
 - broader coverage-guided parser fuzzing and additional resource ceilings;
 - session-to-session comparison;
@@ -284,24 +406,9 @@ Near-term work includes:
 - Human-readable text and JSON schema-versioned evidence
 - MIT licensed
 
-## Release command flow
-
-After building and installing, the normal host workflow is independent of the
-source checkout:
-
-```bash
-sudo /usr/local/sbin/nightwatch calibrate
-sudo /usr/local/sbin/nightwatch preflight
-sudo /usr/local/sbin/nightwatch monitor
-```
-
-Protected configuration, state, and reports live under `/etc/nightwatch`,
-`/var/lib/nightwatch`, and `/var/log/nightwatch` respectively. Explicit CLI
-path overrides remain available for tests and advanced deployments.
-
 ## Source and documentation
 
-The following will be available in this repository for the judges:
+This repository includes:
 
 - complete C++ source code;
 - Makefile and prerequisite instructions;
@@ -309,7 +416,6 @@ The following will be available in this repository for the judges:
 - threat model and architecture design;
 - automated and sanitizer tests;
 - safe synthetic test fixtures;
-- sample human and JSON reports;
 - hackathon demonstration instructions.
 
 Release archives are assembled from an explicit source allow-list. Real host
@@ -318,8 +424,6 @@ conversation state are excluded; the packaged reviewed database is an empty
 template that grants no trust by default.
 
 Nightwatch is available under the [MIT License](LICENSE).
-
-**Full repository content coming soon.**
 
 ---
 
