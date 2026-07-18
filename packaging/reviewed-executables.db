@@ -1,0 +1,4 @@
+nightwatch-reviewed-v2
+# Public template intentionally contains no trusted fingerprints.
+# Investigate a file on the target host before adding an exact executable or
+# script record. Calibration alone does not establish trust.
