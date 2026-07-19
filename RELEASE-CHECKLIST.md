@@ -88,11 +88,17 @@ scans, screenshots, and video should be produced once after the feature freeze.
 
 ## Phase 3 — Submission
 
-- [ ] Confirm the intended `effjy/nightwatch` repository link.
-- [ ] Confirm README/GitHub presentation rendering and all documentation links.
-- [ ] Capture the nine reviewed screenshots in `DEMO.md` from the frozen build.
-- [ ] Record the final demonstration only from publication-safe material.
-- [ ] Assemble and review the video on July 20.
-- [ ] Upload the exact frozen archive and checksum used for validation.
-- [ ] Perform one final repository-visible-file and privacy review before making
+- [x] Confirm the intended `effjy/nightwatch` repository link.
+- [x] Confirm README/GitHub presentation rendering and all documentation links.
+- [x] Capture the nine reviewed screenshots in `DEMO.md` from the frozen build.
+- [x] Record the final demonstration only from publication-safe material.
+- [x] Assemble, upload, and review the final video.
+- [x] Upload the exact frozen archive and checksum used for validation.
+- [x] Perform one final repository-visible-file and privacy review before making
       the repository available to judges.
+- [x] Verify the repository, release page, archive download, checksum, and video
+      while signed out.
+- [x] Confirm the final submission text and intended YouTube URL.
+- [x] Confirm no private information is exposed in the public materials.
+- [ ] Click the final hackathon **Submit** action on July 20.
+- [ ] Preserve the submission confirmation page or email.
