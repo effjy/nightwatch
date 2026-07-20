@@ -1,11 +1,12 @@
 # Nightwatch release checklist
 
-This checklist is phase-gated. The completed `0.1.0-rc1` work below is a
-packaging rehearsal that validated the process and found defects; it is not the
-final release sign-off. Final hashes, calibration, long-watch evidence, privacy
-scans, screenshots, and video should be produced once after the feature freeze.
+This checklist records the completed, phase-gated path to the submitted
+Nightwatch `v0.1.0` hackathon release. The earlier `0.1.0-rc1` work below was a
+packaging rehearsal that validated the process and found defects; the final
+hashes, calibration, long-watch evidence, privacy scans, screenshots, video,
+publication, and submission were completed afterward.
 
-## Phase 1 — Development now
+## Phase 1 — Development (complete)
 
 - [x] Define the exact feature scope required for the hackathon release:
       persistence plus narrow authentication/session evidence, then freeze.
@@ -53,7 +54,7 @@ scans, screenshots, and video should be produced once after the feature freeze.
 - [x] Installed binary, active baseline, and private reviewed database remained
       unchanged.
 
-## Phase 2 — After feature freeze
+## Phase 2 — After feature freeze (complete)
 
 ### Frozen build
 
@@ -86,7 +87,7 @@ scans, screenshots, and video should be produced once after the feature freeze.
 - [x] Prepare only synthetic or manually sanitized sample evidence; no real
       host report is included in the release archive.
 
-## Phase 3 — Submission
+## Phase 3 — Submission (complete)
 
 - [x] Confirm the intended `effjy/nightwatch` repository link.
 - [x] Confirm README/GitHub presentation rendering and all documentation links.
@@ -100,5 +101,8 @@ scans, screenshots, and video should be produced once after the feature freeze.
       while signed out.
 - [x] Confirm the final submission text and intended YouTube URL.
 - [x] Confirm no private information is exposed in the public materials.
-- [ ] Click the final hackathon **Submit** action on July 20.
-- [ ] Preserve the submission confirmation page or email.
+- [x] Click the final hackathon **Submit** action on July 20.
+- [x] Preserve the submission confirmation page or email.
+
+Submission was completed successfully on July 20, 2026, and the confirmation
+email was received and preserved. The hackathon release phase is complete.
